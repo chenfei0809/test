@@ -38,14 +38,14 @@ const sleep=(ms:number)=>new Promise(r=>global.setTimeout(r,ms));
 //   })
 // }
 
-// const sub_event=async(api:ApiPromise)=>{
-//   await api.query.system.events(events=>{
-//     events.forEach(function(event){
-//       console.log('index',event['event']['index'].toHuman());
-//       console.log('data',event['event']['data'].toHuman());
-//     })
-//   })
-// }
+const sub_event=async(api:ApiPromise)=>{
+   await api.query.system.events(events=>{
+     events.forEach(function(event){
+       console.log('index',event['event']['index'].toHuman());
+      console.log('data',event['event']['data'].toHuman());
+    })
+  })
+}
 
 const do_something=async (api:ApiPromise,alice:KeyringPair,something:number)=>{
     await api.tx.templateModule.doSomething(something).signAndSend(alice,{
@@ -70,6 +70,7 @@ const main=async()=>{
   await do_something(api,alice,10000);
   const something=await sub_something(api);
   console.log('something',something.toHuman());
+  await sub_event(api);
   
   // const free= await getFreeBalance(api,alice.address);
   // console.log('deposit is',free.toHuman());
